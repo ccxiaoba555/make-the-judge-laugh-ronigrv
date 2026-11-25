@@ -15,7 +15,7 @@ LINE = (
     "asked me to build it a dashboard."
 )
 
-MAX_CHARS = 200  # the bounty gate: UTF-8 text of 1 to 200 characters
+MAX_CHARS = 200  # the bounty gate: entry must be 1 to 200 characters
 
 
 def main() -> None:
@@ -29,9 +29,11 @@ def main() -> None:
     out_path = out_dir / "entry.txt"
     out_path.write_text(text, encoding="utf-8")
 
-    # Read back and verify what actually landed on disk, byte for byte.
+    # Read back and verify what actually landed on disk, byte for byte:
+    # the file must match LINE exactly, with no trailing newline added.
     written = out_path.read_text(encoding="utf-8")
     assert written == text, "read-back mismatch: entry.txt differs from LINE"
+    assert len(written) == len(text), "read-back length mismatch"
     print(f"wrote {len(text)} chars to {out_path} (read-back verified)")
 
 
